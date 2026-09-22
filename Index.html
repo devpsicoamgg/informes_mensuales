@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
 
-  <title>Informe de Actividades - Bruce Anthony Waterman Cortes</title>
+  <title>Informe de Actividades</title>
 
   <style>
     :root {
@@ -407,10 +407,13 @@
       display: grid;
       grid-template-columns: 1fr 1.4fr;
       gap: 18px;
+      margin-top: 18px;
     }
 
     .resumen-card {
       position: relative;
+      display: flex;
+      flex-direction: column;
       background: var(--blanco);
       border-radius: 16px;
       padding: 14px 18px;
@@ -442,6 +445,7 @@
     /* --- Gráfico de torta (dona) --- */
 
     .torta-contenedor {
+      flex: 1;
       display: flex;
       align-items: center;
       gap: 22px;
@@ -531,24 +535,26 @@
       color: var(--azul-kodland);
     }
 
-    /* --- Histograma de barras --- */
+    /* --- Progreso por clase (barras apiladas) --- */
 
     .histograma {
+      flex: 1;
       display: flex;
       align-items: flex-end;
-      gap: 14px;
-      height: 140px;
+      justify-content: center;
+      gap: 18px;
       padding: 0 4px;
     }
 
     .barra-item {
-      flex: 1;
+      flex: 0 1 auto;
+      width: 74px;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-end;
-      height: 100%;
-      gap: 8px;
+      gap: 6px;
     }
 
     .barra-valor {
@@ -557,34 +563,43 @@
       color: var(--texto);
     }
 
-    .barra {
+    .barra-stack {
       width: 100%;
-      max-width: 34px;
+      max-width: 42px;
+      flex: 1 1 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column-reverse;
       border-radius: 10px 10px 4px 4px;
+      overflow: hidden;
+      box-shadow: 0 3px 8px rgba(84, 97, 154, 0.12);
+    }
+
+    /* El alto de cada tramo se define con flex-grow (proporcional a la cantidad
+       de actividades), no con height:%, para que se ajuste bien al alto real
+       de la tarjeta tanto en pantalla como al exportar a PDF. */
+    .segmento {
+      width: 100%;
+      flex-basis: 0;
+      min-height: 0;
+    }
+
+    .segmento.completo {
       background: var(--chart-completada);
     }
 
-    .barra.completo {
-      background: linear-gradient(180deg,
-          var(--chart-completada),
-          var(--verde-suave));
+    .segmento.parcial {
+      background: var(--chart-parcial);
     }
 
-    .barra.parcial {
-      background: linear-gradient(180deg,
-          var(--chart-parcial),
-          var(--azul-suave));
-    }
-
-    .barra.pendiente {
-      background: linear-gradient(180deg,
-          var(--chart-pendiente),
-          var(--crema-kodland));
+    .segmento.pendiente {
+      background: var(--chart-pendiente);
     }
 
     .barra-nombre {
       font-size: 10px;
-      color: var(--texto-secundario);
+      font-weight: 700;
+      color: var(--azul-kodland);
       text-align: center;
       line-height: 1.2;
     }
@@ -595,7 +610,6 @@
 
     .modulo-card {
       background: linear-gradient(135deg, var(--azul-suave), var(--blanco));
-
       border-radius: 16px;
       padding: 14px 18px;
       border: 1px solid var(--azul-suave);
@@ -1007,7 +1021,7 @@
          OBJETIVOS DEL MÓDULO
     ========================================= -->
 
-    <section class="seccion">
+    <section class="seccion" style="padding-top: 34px">
       <div class="titulo-seccion">
         <span class="punto"></span>
         <h2>Objetivos del módulo 7</h2>
@@ -1023,9 +1037,14 @@
         </div>
 
         <p>
-          🙏 Ave Maria 👩🏽, gratia plena, Dominus 🕊️ tecum. Benedicta tu in mulieribus, et benedictus 🕊️ fructus ventris tui, Iesus. Sancta 🕊️ Maria, Mater Dei, ora pro nobis peccatoribus, nunc 🌙 et in hora mortis nostrae. Amen. 🙏
-          🙏 Pater Noster, 👼 qui es in caelis, sanctificetur 🙌 nomen tuum. Adveniat 🏰 regnum tuum. Fiat voluntas 🙏 tua, sicut in caelo et in terra. Panem nostrum 🍞 quotidianum da nobis 🙏 hodie, et dimitte nobis 🙏 debita nostra sicut et nos dimittimus debitoribus nostris. Et ne nos inducas in tentationem, sed libera nos 🆓 a malo. 🙏 Amen. 🙏
-          
+          🙏 Ave Maria 👩🏽, gratia plena, Dominus 🕊️ tecum. Benedicta tu in mulieribus, et benedictus 🕊️ fructus
+          ventris tui, Iesus. Sancta 🕊️ Maria, Mater Dei, ora pro nobis peccatoribus, nunc 🌙 et in hora mortis
+          nostrae. Amen. 🙏
+          🙏 Pater Noster, 👼 qui es in caelis, sanctificetur 🙌 nomen tuum. Adveniat 🏰 regnum tuum. Fiat voluntas 🙏
+          tua, sicut in caelo et in terra. Panem nostrum 🍞 quotidianum da nobis 🙏 hodie, et dimitte nobis 🙏 debita
+          nostra sicut et nos dimittimus debitoribus nostris. Et ne nos inducas in tentationem, sed libera nos 🆓 a
+          malo. 🙏 Amen. 🙏
+
         </p>
       </div>
     </section>
@@ -1074,12 +1093,13 @@
 
       <div class="resumen-grid">
         <div class="resumen-card">
-          <p class="resumen-titulo">Distribución de actividades por estado</p>
+          <p class="resumen-titulo">Distribución de actividades por estado (módulo completo)</p>
 
           <div class="torta-contenedor">
-            <div class="torta">
+            <div class="torta"
+              style="background: conic-gradient(var(--chart-completada) 0% 68%, var(--chart-parcial) 68% 86%, var(--chart-pendiente) 86% 100%);">
               <div class="torta-centro">
-                <strong>5</strong>
+                <strong>38</strong>
                 <span>Actividades</span>
               </div>
             </div>
@@ -1088,54 +1108,64 @@
               <div class="leyenda-item">
                 <span class="leyenda-punto completo"></span>
                 Completadas
-                <span class="leyenda-porcentaje">60%</span>
+                <span class="leyenda-porcentaje">68%</span>
               </div>
               <div class="leyenda-item">
                 <span class="leyenda-punto parcial"></span>
                 Parciales
-                <span class="leyenda-porcentaje">20%</span>
+                <span class="leyenda-porcentaje">18%</span>
               </div>
               <div class="leyenda-item">
                 <span class="leyenda-punto pendiente"></span>
                 Pendientes
-                <span class="leyenda-porcentaje">20%</span>
+                <span class="leyenda-porcentaje">14%</span>
               </div>
             </div>
           </div>
         </div>
 
         <div class="resumen-card">
-          <p class="resumen-titulo">Puntaje obtenido por actividad</p>
+          <p class="resumen-titulo">Progreso por clase (4 clases del módulo)</p>
 
           <div class="histograma">
             <div class="barra-item">
-              <span class="barra-valor">15/15</span>
-              <div class="barra completo" style="height: 100%"></div>
-              <span class="barra-nombre">Conexión al servidor</span>
+              <span class="barra-valor">9 activ.</span>
+              <div class="barra-stack">
+                <div class="segmento completo" style="flex-grow: 6"></div>
+                <div class="segmento parcial" style="flex-grow: 2"></div>
+                <div class="segmento pendiente" style="flex-grow: 1"></div>
+              </div>
+              <span class="barra-nombre">Clase 1</span>
             </div>
 
             <div class="barra-item">
-              <span class="barra-valor">20/20</span>
-              <div class="barra completo" style="height: 100%"></div>
-              <span class="barra-nombre">Creación de salas</span>
+              <span class="barra-valor">12 activ.</span>
+              <div class="barra-stack">
+                <div class="segmento completo" style="flex-grow: 9"></div>
+                <div class="segmento parcial" style="flex-grow: 2"></div>
+                <div class="segmento pendiente" style="flex-grow: 1"></div>
+              </div>
+              <span class="barra-nombre">Clase 2</span>
             </div>
 
             <div class="barra-item">
-              <span class="barra-valor">14/20</span>
-              <div class="barra parcial" style="height: 70%"></div>
-              <span class="barra-nombre">Chat entre jugadores</span>
+              <span class="barra-valor">7 activ.</span>
+              <div class="barra-stack">
+                <div class="segmento completo" style="flex-grow: 4"></div>
+                <div class="segmento parcial" style="flex-grow: 2"></div>
+                <div class="segmento pendiente" style="flex-grow: 1"></div>
+              </div>
+              <span class="barra-nombre">Clase 3</span>
             </div>
 
             <div class="barra-item">
-              <span class="barra-valor">25/25</span>
-              <div class="barra completo" style="height: 100%"></div>
-              <span class="barra-nombre">Sincronización RPC</span>
-            </div>
-
-            <div class="barra-item">
-              <span class="barra-valor">0/20</span>
-              <div class="barra pendiente" style="height: 4%"></div>
-              <span class="barra-nombre">Generación de enemigos</span>
+              <span class="barra-valor">10 activ.</span>
+              <div class="barra-stack">
+                <div class="segmento completo" style="flex-grow: 7"></div>
+                <div class="segmento parcial" style="flex-grow: 1"></div>
+                <div class="segmento pendiente" style="flex-grow: 2"></div>
+              </div>
+              <span class="barra-nombre">Clase 4</span>
             </div>
           </div>
         </div>
